@@ -1,29 +1,45 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 import json
 from time import sleep
-from pySmartDL import SmartDL
-import os
 from msedge.selenium_tools import Edge, EdgeOptions
+import webbrowser
+from selenium import webdriver
 
 
 
 
 
 
+# defining the function that takes care of the download after you choose what to download
 
 def download(link) :
+
+  # defining some technical stuff nobody has to know about
 
   options = EdgeOptions()
   options.use_chromium = True
   options.add_argument("headless")
   options.add_argument("disable-gpu")
   options.add_argument("--log-level=0")
-  driver = Edge(executable_path = os.getcwd() + '\\Desktop\\EGYBEST\\msedgedriver.exe', options=options)
+  options.add_argument("--mute-audio")
+  try :
+      driver = Edge(executable_path = os.getcwd() + '\\Desktop\\EGYBEST\\msedgedriver.exe', options=options)
+  except :
+      from selenium.webdriver.chrome.options import Options
+      chrome_options = Options()
+      chrome_options.add_argument("--mute-audio")
+      chrome_options.add_argument("--disable-extensions")
+      chrome_options.add_argument("--disable-gpu")
+      chrome_options.add_argument("--headless")
+      driver = webdriver.Chrome(executable_path = os.getcwd() + '\\Desktop\\EGYBEST\\chromedriver.exe', options=chrome_options)
 
 
 
-  print("> Gathering the download link, please wait : \n")
+  # visiting the link and looking for the download website
+
+  print("\n\n> Gathering the download link, please wait : \n")
   driver.get(link)
 
   driver.find_element_by_xpath(f'//*[@id="watch_dl"]/table/tbody/tr[{quality}]/td[4]/a[1]').click()
@@ -48,27 +64,24 @@ def download(link) :
   driver.quit()
 
 
-  try :
-    os.mkdir(os.getcwd() + f"\\Desktop\\{showtitles[choice - 1]}")
-  except :
-    pass
-
-
-  try :
-    task = SmartDL(dl, os.getcwd() + f"\\Desktop\\{showtitles[choice - 1]}\\Season {schoice} - {eptitles[eplinks.index(link)]}.mp4")
-    task.start()
-    task.wait()
-    print('EPISODE DOWNLOAD FINISHED.')
-  except :
-    task = SmartDL(dl, os.getcwd() + f"\\Desktop\\{showtitles[choice - 1]}\\{showtitles[choice - 1].replace(':', '')}.mp4")
-    task.start()
-    task.wait()
-    print('MOVIE DOWNLOAD FINISHED.')
+  webbrowser.register('edge', None, webbrowser.BackgroundBrowser("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"))
+  browser = webbrowser.get('edge')
+  if browser.open('about:blank') :
+    sleep(4)
+    browser.open(dl)
+  else :
+    webbrowser.register('chrome', None, webbrowser.BackgroundBrowser("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"))
+    browser = webbrowser.get('chrome')
+    browser.open('about:blank')
+    sleep(4)
+    browser.open(dl)
 
 
   return
 
 
+
+# THE WAITING PARAMETER COMES HANDY IS YOU HAVE A BIT SLOWER INTERNET SPEED
 
 waiting = int(input("Enter loading page waiting time (default is 2, increase if you have slow internet, hit enter to skip) : ") or "2")
 
@@ -76,7 +89,12 @@ waiting = int(input("Enter loading page waiting time (default is 2, increase if 
 choice = 0
 while choice == 0 :
   showtitles, showlinks = [], []
-  name = input("> What Movie/Show you're looking for : ")
+
+  # REQUESTING WHAT TO LOOK FOR ON EGYBEST AND TAKING A CHOICE
+
+  name = input("\n> What Movie/Show you're looking for : ")
+  
+
   url = f"https://seen.egybest.ltd/explore/?page=1&output_format=json&q={name}"
   headers = {
     'authority': 'seen.egybest.ltd',
@@ -94,6 +112,7 @@ while choice == 0 :
     'cookie': 'EGUDI=Skwaiting516waiting98644waiting7zeuu.e80dbd59dfacafcbffb00e5bf6ea5c8406462fba0a147b042125ede7waiting65waitingdcewaiting7cf6c8e087cb809cwaitingwaiting752b2c8ce1a112d774f927waiting01d01920405fd5811244aca; PSSID=OafJrlnFuJeC0S5NX226h6uqjBFcaH2Qjk1GnIZx4PP9BXyFwA4OwlGD5GIrp27SlDKVuBGA0xmf7EWRmpx6IxUz46UGEewaitingwkmmQnBo7u89SjFAQ1WMbPIZti%2CQvLYoH; waiting24e9a7c=MvvvVKTkzYrVvWXUcXWXIBXcXUXWBXXWVvVGpovVvWvVXPviZXvzFXmBXafkURvVWVvVopfevVvWvVigwXvzBWFZBVCdvVvc-1b69e62a5waitingea7eef8d0100waiting62c6dc1c6; __cf_bm=mKO8fYLVp4kH7tiLyOS0rEe_pDvFdxC64gKo.7fqXrw-1640861waiting8waiting-0-AfOhATOrCfVDPFfGCoBmAUYGBn7Ji4waitingvswaovilSb0hfGdeH1eMH5VRUIVxH4TOj5pFHSxdxr/jcbJOUEnMw8tM=; JS_TIMEZONE_OFFSET=-waiting600; OUAMgwaitingmBI5MGMY8CX=1F4GgG9WUSAvsqXKWNWPTBKfpQhGJwwaitinghLRVkzOENEgprP2eMISPfUGD6UuoR; push_subscribed=ignore'
   }
   data = BeautifulSoup(json.loads(requests.get(url, headers=headers).text)['html'], 'lxml').findAll('a', {'class' : 'movie'})
+
   for show in data :
     showlink = 'https://seen.egybest.ltd' + show['href']
     showtitle = show.find('span', {'class' : 'title'}).text
@@ -104,6 +123,9 @@ while choice == 0 :
   choice = int(input('> Choose a Show/Movie : '))
 
 
+# SHOWING THE AVAILABLE SEASONS IF IT'S A SERIE AND TAKING A CHOICE IF APPLICABLE
+
+print('\n')
 if "/series/" in showlinks[choice - 1] :
   seasons = BeautifulSoup(requests.get(showlinks[choice - 1]).text, 'lxml').find('div', {'class' : 'contents movies_small'}).findAll('a')
   c = 0
@@ -119,7 +141,9 @@ if "/series/" in showlinks[choice - 1] :
   schoice = int(input('> Choose a season : '))
 
 
+  # SHOWING THE EPISODES OF THE CHOSEN SEASON AND TAKING A CHOICE
 
+  print('\n')
   eps = BeautifulSoup(requests.get(seasonlinks[schoice - 1]).text, 'lxml').find('div', {'class' : 'movies_small'}).findAll('a')
   c = 0
   eplinks, eptitles = [], []
@@ -136,31 +160,36 @@ if "/series/" in showlinks[choice - 1] :
   epchoice = int(input('> Choose an episode : '))
 
 
+  # SHOWING AVAILABLE QUALITITES AND TAKING A CHOICE
 
   try :
-    check = eplinks[epchoice - 1]
+    
     qualities = BeautifulSoup(requests.get(eplinks[epchoice - 1]).text, 'lxml').find('tbody').findAll('tr')
-    print("> CHOOSE A QUALITY : ")
+    print("\n> CHOOSE A QUALITY : ")
     qq = ['\t1 - Full HD 1080p : ', '\t2 - HD 720p : ', '\t3 - SD 480p : ', '\t4 - SD 360p : ', '\t5 - Low 240p : ']
 
     for w in range(0, len(qualities)) :
       print(qq[w] + qualities[w].findAll('td')[2].text)
+    
 
     quality = int(input())
     download(eplinks[epchoice - 1])
-
+  
   except :
     print("DOWNLOADING ALL EPISODES")
-    quality = int(input("> CHOOSE ONE QUALITY FOR ALL EPISODES : \n\t1 - Full HD 1080p\n\t2 - HD 720p\n\t3 - SD 480p\n\t4 - SD 360p\n\t5 - Low 240p\n"))
+    quality = int(input("\n> CHOOSE ONE QUALITY FOR ALL EPISODES : \n\t1 - Full HD 1080p\n\t2 - HD 720p\n\t3 - SD 480p\n\t4 - SD 360p\n\t5 - Low 240p\n"))
     
     for link in eplinks :
       print(f"DOWNLOADING EPISODE {eplinks.index(link) + 1}")
       download(link)
 
+
+# IF IT'S A MOVIE INSTEAD, SHOW THE AVAILABLE QUALITIES AND TAKING A CHOICE
+
 else :
   print(f"> YOU CHOSE : {showtitles[choice - 1].replace(':', '')}")
   qualities = BeautifulSoup(requests.get(showlinks[choice - 1]).text, 'lxml').find('tbody').findAll('tr')
-  print("> CHOOSE A QUALITY : ")
+  print("\n> CHOOSE A QUALITY : ")
   qq = ['\t1 - Full HD 1080p : ', '\t2 - HD 720p : ', '\t3 - SD 480p : ', '\t4 - SD 360p : ', '\t5 - Low 240p : ']
   
   for w in range(0, len(qualities)) :
@@ -169,3 +198,4 @@ else :
   quality = int(input())
 
   download(showlinks[choice - 1])
+

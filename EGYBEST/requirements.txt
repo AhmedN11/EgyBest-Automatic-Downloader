@@ -1,6 +1,4 @@
 requests
 bs4
-pySmartDL
 selenium
-helium
 msedge-selenium-tools

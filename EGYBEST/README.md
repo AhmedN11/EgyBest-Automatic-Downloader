@@ -4,9 +4,7 @@ This is a python script I've developed that downloads a movie/series of your cho
 ### For this script to work on your machine, you'll need :
   ###### - Requests Library
   ###### - BeautifulSoup Library
-  ###### - pySmartDL Library
   ###### - Selenium Library
-  ###### - Helium Library
   ###### - msedge-selenium-tools Library
 
 These can be installed using the command : pip install -r requirements.txt
@@ -18,7 +16,9 @@ Please make sure that the browser and webdriver are up to date and are compatibl
 
 ## How to use :
 
-The usage of this program is pretty straightforward. After extracting the EGYBEST folder to the "DESKTOP" (or else it won't work because the path to the webdrivers is hard-coded) :
+The usage of this program is pretty straightforward.
+
+DISCLAIMER : For this version to work, you MUST delete the driver you are not going to need, e.g. Chrome users MUST delete "msedgedriver.exe", and vice-versa.
 
 First, you get to define how long the headless browser will wait for the website to load in the background, increase depending on how slow your internet speed is.
 
@@ -46,11 +46,11 @@ Tada! After the download is finished, your episode/season should be available in
 </p>
 
 
-### How update Edge WebDriver (in case it doesn't work) :
+### How update Edge WebDriver (in case it stops working) :
 
 - First of all, you have to make sure that your browser is up to date.
 
-- Then, go to [Edge webdriver page](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) and download the latest webdriver according to which browser you have (Stable/Beta/...)
+- Then, go to [Edge webdriver page](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) and download the latest webdriver according to which browser you have (Stable/Beta/...). The same goes to [Chrome](https://chromedriver.chromium.org/downloads).
 
 ![ ](https://i.imgur.com/88aUNr2.png)
 
@@ -62,4 +62,8 @@ Tada! After the download is finished, your episode/season should be available in
 
 	- Added download quality options.
 	- Added whole season download.
-	- Only supports Edge browser.
+
+## V2 :
+
+	- Added support for Chrome users (for this version to work, you MUST delete the driver you are not going to need, e.g. Chrome users MUST delete "msedgedriver.exe", and vice-versa). Make sure the drivers AND the browsers are up to date.
+	- Now supports download via IDMan if you have it installed alongside its browser extension, if not, the download starts in the browser.
