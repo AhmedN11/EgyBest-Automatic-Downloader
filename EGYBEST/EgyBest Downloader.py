@@ -92,7 +92,7 @@ while choice == 0 :
 
   # REQUESTING WHAT TO LOOK FOR ON EGYBEST AND TAKING A CHOICE
 
-  name = input("\n> What Movie/Show you're looking for : ")
+  name = input("\n> What Movie/Show/Anime you're looking for : ")
   
 
   url = f"https://seen.egybest.ltd/explore/?page=1&output_format=json&q={name}"
@@ -120,7 +120,7 @@ while choice == 0 :
     showtitles.append(showtitle)
     print(f"{showtitles.index(showtitle) + 1} - {showtitle} : {showlink}")
   print("0 - Search again")
-  choice = int(input('> Choose a Show/Movie : '))
+  choice = int(input('> Choose a Movie/Show/Anime : '))
 
 
 # SHOWING THE AVAILABLE SEASONS IF IT'S A SERIE AND TAKING A CHOICE IF APPLICABLE
@@ -185,6 +185,62 @@ if "/series/" in showlinks[choice - 1] :
 
 
 # IF IT'S A MOVIE INSTEAD, SHOW THE AVAILABLE QUALITIES AND TAKING A CHOICE
+
+elif "/anime/" in showlinks[choice - 1] :
+  seasons = BeautifulSoup(requests.get(showlinks[choice - 1]).text, 'lxml').find('div', {'class' : 'contents movies_small'}).findAll('a')
+  c = 0
+  seasontitles, seasonlinks = [], []
+  for season in seasons[-1:-len(seasons)-1:-1] :
+    seasonlink = season['href']
+    seasontitle = season.find('span', {'class' : 'title'}).text
+    seasonlinks.append(seasonlink)
+    seasontitles.append(seasontitle)
+    c += 1
+    print(f"{c} - Season {c} : {seasonlink}")
+
+  schoice = int(input('> Choose a season : '))
+
+  # SHOWING THE EPISODES OF THE CHOSEN SEASON AND TAKING A CHOICE
+
+  print('\n')
+  eps = BeautifulSoup(requests.get(seasonlinks[schoice - 1]).text, 'lxml').findAll('td', {'class' : 'ep_title'})
+  c = 0
+  eplinks, eptitles = [], []
+  for ep in eps :
+    c += 1
+    eplink = ep.a['href']
+    eptitle = ep.span.text
+    eplinks.append(eplink)
+    eptitles.append(eptitle)
+    print(f"{c} - Ep {c} : {eplink}")
+  c += 1
+  print(f"{c} - Download all episodes")
+
+  epchoice = int(input('> Choose an episode : '))
+
+
+  # SHOWING AVAILABLE QUALITITES AND TAKING A CHOICE
+
+  try :
+    
+    qualities = BeautifulSoup(requests.get(eplinks[epchoice - 1]).text, 'lxml').find('tbody').findAll('tr')
+    print("\n> CHOOSE A QUALITY : ")
+    qq = ['\t1 - Full HD 1080p : ', '\t2 - HD 720p : ', '\t3 - SD 480p : ', '\t4 - SD 360p : ', '\t5 - Low 240p : ']
+
+    for w in range(0, len(qualities)) :
+      print(qq[w] + qualities[w].findAll('td')[2].text)
+    
+
+    quality = int(input())
+    download(eplinks[epchoice - 1])
+  
+  except :
+    print("DOWNLOADING ALL EPISODES")
+    quality = int(input("\n> CHOOSE ONE QUALITY FOR ALL EPISODES : \n\t1 - Full HD 1080p\n\t2 - HD 720p\n\t3 - SD 480p\n\t4 - SD 360p\n\t5 - Low 240p\n"))
+    
+    for link in eplinks :
+      print(f"DOWNLOADING EPISODE {eplinks.index(link) + 1}")
+      download(link)
 
 else :
   print(f"> YOU CHOSE : {showtitles[choice - 1].replace(':', '')}")

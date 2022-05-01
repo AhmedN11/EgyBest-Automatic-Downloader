@@ -67,3 +67,8 @@ Tada! After the download is finished, your episode/season should be available in
 
 	- Added support for Chrome users (for this version to work, you MUST delete the driver you are not going to need, e.g. Chrome users MUST delete "msedgedriver.exe", and vice-versa). Make sure the drivers AND the browsers are up to date.
 	- Now supports download via IDMan if you have it installed alongside its browser extension, if not, the download starts in the browser.
+
+## V3 :
+
+	- Added support for anime content (newly hosted on the website).
+
