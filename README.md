@@ -9,9 +9,11 @@ This is a python script I've developed that downloads a movie/series of your cho
 
 These can be installed using the command : pip install -r requirements.txt
 
-And a Microsoft Edge browser (if you don't have a python IDE, you can turn the .py file into .exe using pyinstaller, just make sure to move the .exe file to the same location as the .py file).
+And a Microsoft Edge or Google Chrome browser.
 
 Please make sure that the browser and webdriver are up to date and are compatible (more on that below).
+
+NOTE : The folder containing the files MUST be named "EGYBEST" AND MUST be located on your DESKTOP.
 
 
 ## How to use :
@@ -54,7 +56,7 @@ Tada! After the download is finished, your episode/season should be available in
 
 ![ ](https://i.imgur.com/88aUNr2.png)
 
-- Move to the folder containing your .py file and replace the old driver.
+- Move to the folder containing your .py file and replace the old driver (the folder MUST be named "EGYBEST" AND MUST be located on your DESKTOP).
 
 - Done!
 
@@ -72,3 +74,6 @@ Tada! After the download is finished, your episode/season should be available in
 
 	- Added support for anime content (newly hosted on the website).
 
+## V4 :
+
+	- Fixed wrong quality bug.

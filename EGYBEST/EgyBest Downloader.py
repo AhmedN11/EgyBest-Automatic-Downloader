@@ -166,19 +166,23 @@ if "/series/" in showlinks[choice - 1] :
     
     qualities = BeautifulSoup(requests.get(eplinks[epchoice - 1]).text, 'lxml').find('tbody').findAll('tr')
     print("\n> CHOOSE A QUALITY : ")
-    qq = ['\t1 - Full HD 1080p : ', '\t2 - HD 720p : ', '\t3 - SD 480p : ', '\t4 - SD 360p : ', '\t5 - Low 240p : ']
 
     for w in range(0, len(qualities)) :
-      print(qq[w] + qualities[w].findAll('td')[2].text)
+      print(f'\t {w + 1} - ' + qualities[w].findAll('td')[1].text + ' : ' + qualities[w].findAll('td')[2].text)
     
 
-    quality = int(input())
+    quality = int(input('> '))
     download(eplinks[epchoice - 1])
   
   except :
     print("DOWNLOADING ALL EPISODES")
-    quality = int(input("\n> CHOOSE ONE QUALITY FOR ALL EPISODES : \n\t1 - Full HD 1080p\n\t2 - HD 720p\n\t3 - SD 480p\n\t4 - SD 360p\n\t5 - Low 240p\n"))
+    print("\n> CHOOSE ONE QUALITY FOR ALL EPISODES : ")
     
+    for w in range(0, len(qualities := BeautifulSoup(requests.get(eplinks[1]).text, 'lxml').find('tbody').findAll('tr'))) :
+      print(f'\t {w + 1} - ' + qualities[w].findAll('td')[1].text + ' : ' + qualities[w].findAll('td')[2].text)
+
+    quality = int(input("> "))
+
     for link in eplinks :
       print(f"DOWNLOADING EPISODE {eplinks.index(link) + 1}")
       download(link)
@@ -225,19 +229,23 @@ elif "/anime/" in showlinks[choice - 1] :
     
     qualities = BeautifulSoup(requests.get(eplinks[epchoice - 1]).text, 'lxml').find('tbody').findAll('tr')
     print("\n> CHOOSE A QUALITY : ")
-    qq = ['\t1 - Full HD 1080p : ', '\t2 - HD 720p : ', '\t3 - SD 480p : ', '\t4 - SD 360p : ', '\t5 - Low 240p : ']
 
     for w in range(0, len(qualities)) :
-      print(qq[w] + qualities[w].findAll('td')[2].text)
+      print(f'\t {w + 1} - ' + qualities[w].findAll('td')[1].text + ' : ' + qualities[w].findAll('td')[2].text)
     
 
-    quality = int(input())
+    quality = int(input('> '))
     download(eplinks[epchoice - 1])
   
   except :
     print("DOWNLOADING ALL EPISODES")
-    quality = int(input("\n> CHOOSE ONE QUALITY FOR ALL EPISODES : \n\t1 - Full HD 1080p\n\t2 - HD 720p\n\t3 - SD 480p\n\t4 - SD 360p\n\t5 - Low 240p\n"))
+    print("\n> CHOOSE ONE QUALITY FOR ALL EPISODES : ")
     
+    for w in range(0, len(qualities := BeautifulSoup(requests.get(eplinks[1]).text, 'lxml').find('tbody').findAll('tr'))) :
+      print(f'\t {w + 1} - ' + qualities[w].findAll('td')[1].text + ' : ' + qualities[w].findAll('td')[2].text)
+
+    quality = int(input("> "))
+
     for link in eplinks :
       print(f"DOWNLOADING EPISODE {eplinks.index(link) + 1}")
       download(link)
@@ -249,9 +257,9 @@ else :
   qq = ['\t1 - Full HD 1080p : ', '\t2 - HD 720p : ', '\t3 - SD 480p : ', '\t4 - SD 360p : ', '\t5 - Low 240p : ']
   
   for w in range(0, len(qualities)) :
-    print(qq[w] + qualities[w].findAll('td')[2].text)
+    print(f'\t {w + 1} - ' + qualities[w].findAll('td')[1].text + ' : ' + qualities[w].findAll('td')[2].text)
 
-  quality = int(input())
+  quality = int(input('> '))
 
   download(showlinks[choice - 1])
 
