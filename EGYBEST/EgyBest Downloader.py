@@ -25,6 +25,8 @@ def download(link) :
   options.add_argument("--log-level=0")
   options.add_argument("--mute-audio")
   try :
+      while 'Desktop' in os.getcwd():
+        os.chdir('../')
       driver = Edge(executable_path = os.getcwd() + '\\Desktop\\EGYBEST\\msedgedriver.exe', options=options)
   except :
       from selenium.webdriver.chrome.options import Options

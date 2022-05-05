@@ -77,3 +77,7 @@ Tada! After the download is finished, your episode/season should be available in
 ## V4 :
 
 	- Fixed wrong quality bug.
+
+## V4.1 :
+
+	- Fixed minor bugs.
