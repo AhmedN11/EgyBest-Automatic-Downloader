@@ -54,7 +54,7 @@ def download(link) :
   sleep(waiting)
   driver.get(link)
   sleep(waiting + 3)
-  driver.get('https://seen.egybest.ltd' + driver.find_element_by_xpath(f'//*[@id="watch_dl"]/table/tbody/tr[{quality}]/td[4]/a[1]').get_attribute('data-url'))
+  driver.get('https://egy.best' + driver.find_element_by_xpath(f'//*[@id="watch_dl"]/table/tbody/tr[{quality}]/td[4]/a[1]').get_attribute('data-url'))
   sleep(waiting)
   driver.find_element_by_xpath('/html/body/div[1]/div/p/a[1]').click()
   sleep(waiting + 3)
@@ -97,7 +97,7 @@ while choice == 0 :
   name = input("\n> What Movie/Show/Anime you're looking for : ")
   
 
-  url = f"https://seen.egybest.ltd/explore/?page=1&output_format=json&q={name}"
+  url = f"https://egy.best/explore/?page=1&output_format=json&q={name}"
   headers = {
     'authority': 'seen.egybest.ltd',
     'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"',
@@ -109,14 +109,14 @@ while choice == 0 :
     'sec-fetch-site': 'same-origin',
     'sec-fetch-mode': 'cors',
     'sec-fetch-dest': 'empty',
-    'referer': f'https://seen.egybest.ltd/explore/?q={name}',
+    'referer': f'https://egy.best/explore/?q={name}',
     'accept-language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
     'cookie': 'EGUDI=Skwaiting516waiting98644waiting7zeuu.e80dbd59dfacafcbffb00e5bf6ea5c8406462fba0a147b042125ede7waiting65waitingdcewaiting7cf6c8e087cb809cwaitingwaiting752b2c8ce1a112d774f927waiting01d01920405fd5811244aca; PSSID=OafJrlnFuJeC0S5NX226h6uqjBFcaH2Qjk1GnIZx4PP9BXyFwA4OwlGD5GIrp27SlDKVuBGA0xmf7EWRmpx6IxUz46UGEewaitingwkmmQnBo7u89SjFAQ1WMbPIZti%2CQvLYoH; waiting24e9a7c=MvvvVKTkzYrVvWXUcXWXIBXcXUXWBXXWVvVGpovVvWvVXPviZXvzFXmBXafkURvVWVvVopfevVvWvVigwXvzBWFZBVCdvVvc-1b69e62a5waitingea7eef8d0100waiting62c6dc1c6; __cf_bm=mKO8fYLVp4kH7tiLyOS0rEe_pDvFdxC64gKo.7fqXrw-1640861waiting8waiting-0-AfOhATOrCfVDPFfGCoBmAUYGBn7Ji4waitingvswaovilSb0hfGdeH1eMH5VRUIVxH4TOj5pFHSxdxr/jcbJOUEnMw8tM=; JS_TIMEZONE_OFFSET=-waiting600; OUAMgwaitingmBI5MGMY8CX=1F4GgG9WUSAvsqXKWNWPTBKfpQhGJwwaitinghLRVkzOENEgprP2eMISPfUGD6UuoR; push_subscribed=ignore'
   }
   data = BeautifulSoup(json.loads(requests.get(url, headers=headers).text)['html'], 'lxml').findAll('a', {'class' : 'movie'})
 
   for show in data :
-    showlink = 'https://seen.egybest.ltd' + show['href']
+    showlink = 'https://egy.best' + show['href']
     showtitle = show.find('span', {'class' : 'title'}).text
     showlinks.append(showlink)
     showtitles.append(showtitle)
